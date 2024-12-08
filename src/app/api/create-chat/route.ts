@@ -12,7 +12,7 @@ export async function POST(req: Request, res: Response) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
   try {
-    const body = await req.json();
+    // const body = await req.json();
     const chat_id = await db
       .insert(chats)
       .values({

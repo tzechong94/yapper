@@ -28,7 +28,7 @@ export default async function Home() {
         <div className="flex flex-col items-center text-center">
           <div className="flex items-center">
             <h1 className="mr-3 text-5xl font-bold mb-6">Yapper</h1>
-            <UserButton afterSignOutUrl="/" />
+            <UserButton />
           </div>
           <p className="max-w-full mt-1 text-lg text-slate-600 mt-4">
             {isAuth
