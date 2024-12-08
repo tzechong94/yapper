@@ -22,13 +22,21 @@ const ChatComponent = ({ chatId }: Props) => {
     },
   });
 
-  const { input, handleInputChange, handleSubmit, messages } = useChat({
-    api: "/api/chat",
-    body: {
-      chatId,
-    },
-    initialMessages: data || [],
-  });
+  const { input, handleInputChange, handleSubmit, messages, setMessages } =
+    useChat({
+      api: "/api/chat",
+      body: {
+        chatId,
+      },
+      initialMessages: data || [],
+    });
+
+  React.useEffect(() => {
+    if (data && !isLoading) {
+      setMessages(data); // Update messages with the fetched data
+    }
+  }, [data, isLoading, setMessages]);
+
   React.useEffect(() => {
     const messageContainer = document.getElementById("message-container");
     if (messageContainer) {
@@ -38,11 +46,9 @@ const ChatComponent = ({ chatId }: Props) => {
       });
     }
   }, [messages]);
+
   return (
-    <div
-      className="relative h-screen overflow-y-scroll"
-      id="message-container"
-    >
+    <div className="relative h-screen overflow-y-scroll" id="message-container">
       {/* header */}
       <div className="sticky top-0 inset-x-0 p-2 bg-white h-fit">
         <h3 className="text-xl font-bold">Chat</h3>

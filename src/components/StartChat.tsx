@@ -32,9 +32,9 @@ const FileUpload = () => {
   };
 
   return (
-    <div className="p-2 bg-white rounded-xl">
+    <div className="p-2 rounded-xl">
       <div>
-        <Button onClick={handleClick}>Go to chat</Button>
+        <Button onClick={handleClick}>Start chatting</Button>
       </div>
     </div>
   );

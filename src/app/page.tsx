@@ -3,7 +3,7 @@ import { UserButton } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { ArrowRight, LogIn, Space } from "lucide-react";
-import FileUpload from "@/components/FileUpload";
+import StartChat from "@/components/StartChat";
 import { db } from "@/lib/db";
 import { eq } from "drizzle-orm";
 import { chats } from "@/lib/db/schema";
@@ -27,21 +27,27 @@ export default async function Home() {
       >
         <div className="flex flex-col items-center text-center">
           <div className="flex items-center">
-            <h1 className="mr-3 text-5xl font-bold mb-6">AskDoc</h1>
+            <h1 className="mr-3 text-5xl font-bold mb-6">Yapper</h1>
             <UserButton afterSignOutUrl="/" />
           </div>
           <p className="max-w-full mt-1 text-lg text-slate-600 mt-4">
             {isAuth
-              ? "Welcome! Explore your health insights by asking AI-Doc for personalized advice about your health concerns, symptoms, and medication queries. " +
-                "AskDoc, a combination of 'Doctor' and 'Document', is a wordplay that embodies our unique approach in using interactive AI to revolutionize " +
-                "the way you interact with your medical documents. Go on, we accept documents in PDF or images in JPG and PNG!"
-              : "At AskDoc, we've harnessed the power of artificial intelligence to make healthcare communication more accessible and informative than ever before. " +
-                "Our cutting-edge AI technology reads and analyzes your medical reports, providing you with valuable insights and facilitating personalized " +
-                "health conversations. Your health journey has never been more accessible, informative, and engaging!"}
+              ? "Chat with an AI. Go to your chats by clicking the button below."
+              : "Chat with an AI. Log in now"}
           </p>
           <div className="w-full mt-8 max-w-5">
             {isAuth ? (
-              <FileUpload />
+              firstChat ? (
+                <>
+                  <Link href={`/chat/${firstChat.id}`}>
+                    <Button>
+                      See chats <ArrowRight className="ml-2" />
+                    </Button>
+                  </Link>
+                </>
+              ) : (
+                <StartChat />
+              )
             ) : (
               <Link href="/sign-in">
                 <Button>
@@ -49,26 +55,6 @@ export default async function Home() {
                   <LogIn className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
-            )}
-          </div>
-          <div className="flex mt-8">
-            {isAuth && firstChat && (
-              <>
-                <Link href={`/chat/${firstChat.id}`}>
-                  <Button>
-                    Retrieve Doc <ArrowRight className="ml-2" />
-                  </Button>
-                </Link>
-                &nbsp;
-                <Link href={`/ask`}>
-                  <Button>
-                    Ask AI-Doc <ArrowRight className="ml-2" />
-                  </Button>
-                </Link>
-                {/* <div className="ml-3">
-                  <SubscriptionButton isPro={isPro} />
-                </div> */}
-              </>
             )}
           </div>
         </div>
