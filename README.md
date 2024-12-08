@@ -98,3 +98,5 @@ The user interface (UI) is built with **Next.js**, **TypeScript**, **TailwindCSS
 ## Conclusion
 
 This project provides a simple but powerful AI-powered chatbot with full user authentication, chat history persistence, and a clean, modern UI. By using **Next.js**, **ClerkJS**, **Drizzle ORM**, and **NeonDB**, the architecture ensures scalability and maintainability for future enhancements.
+
+TestPassword123!@3 -> test account
