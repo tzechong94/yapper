@@ -7,6 +7,7 @@ import StartChat from "@/components/StartChat";
 import { db } from "@/lib/db";
 import { eq } from "drizzle-orm";
 import { chats } from "@/lib/db/schema";
+import TypewriterTitle from "@/components/TypewriterTitle";
 
 export default async function Home() {
   const { userId } = await auth();
@@ -20,42 +21,41 @@ export default async function Home() {
     }
   }
   return (
-    <div className="fixed inset-0 bg-cover bg-center bg-no-repeat bg-[url('/images/Main.jpg')] overflow-y-scroll flex items-center justify-center">
-      <div
-        className="flex-1 max-w-6xl my-8 p-8 backdrop-filter backdrop-blur-lg bg-white/40 self-center"
-        style={{ fontFamily: "sans-serif" }}
-      >
-        <div className="flex flex-col items-center text-center">
-          <div className="flex items-center">
-            <h1 className="mr-3 text-5xl font-bold mb-6">Yapper</h1>
-            <UserButton />
-          </div>
-          <p className="max-w-full mt-1 text-lg text-slate-600 mt-4">
-            {isAuth
-              ? "Chat with an AI. Go to your chats by clicking the button below."
-              : "Chat with an AI. Log in now"}
-          </p>
-          <div className="w-full mt-8 max-w-5">
-            {isAuth ? (
-              firstChat ? (
-                <>
-                  <Link href={`/chat/${firstChat.id}`}>
-                    <Button>
-                      See chats <ArrowRight className="ml-2" />
-                    </Button>
-                  </Link>
-                </>
-              ) : (
-                <StartChat />
-              )
+    <div className="bg-gradient-to-r min-h-screen from-gray-100 grainy to-teal-100 flex items-center justify-center">
+      <div className="text-center px-4 md:px-8">
+        <h1 className="font-semibold text-4xl md:text-6xl lg:text-7xl">
+          Yapper
+          <br></br> your{" "}
+          <span className="text-cyan-600 font-bold">AI Companion</span>
+        </h1>
+        <div className="mt-4"></div>
+        <h2 className="font-semibold text-lg md:text-2xl lg:text-3xl text-slate-700 mt-4">
+          <TypewriterTitle />
+        </h2>
+        <div className="mt-8"></div>
+        <div className="flex justify-center">
+          {isAuth ? (
+            firstChat ? (
+              <>
+                <Link href={`/chat/${firstChat.id}`}>
+                  <Button>
+                    See chats <ArrowRight className="ml-2" />
+                  </Button>
+                </Link>
+              </>
             ) : (
-              <Link href="/sign-in">
-                <Button>
-                  Login to get Started!
-                  <LogIn className="w-4 h-4 ml-2" />
-                </Button>
-              </Link>
-            )}
+              <StartChat />
+            )
+          ) : (
+            <Link href="/sign-in">
+              <Button>
+                Login to get Started!
+                <LogIn className="w-4 h-4 ml-2" />
+              </Button>
+            </Link>
+          )}
+          <div className="ml-4 mt-1.5">
+            <UserButton />
           </div>
         </div>
       </div>

@@ -24,7 +24,7 @@ export async function POST(req: Request) {
     console.log("last message", lastMessage);
     const prompt = {
       role: "system",
-      content: `You're a helpful AI assistant. Answer questions concisely. `,
+      content: `You're a helpful AI assistant. Answer questions and be friendly. `,
     };
 
     const response = await openai.createChatCompletion({

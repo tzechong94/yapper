@@ -1,69 +1,99 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# AI Chatbot Documentation
 
-## Getting Started
+## Overview
 
-First, run the development server:
+The AI Chatbot project allows users to chat with an AI assistant, save chat histories, and create new conversations. Each chat is persisted in a PostgreSQL database (NeonDB) with Drizzle ORM for database interaction. The application supports user authentication via ClerkJS, providing options to log in with Google, GitHub, or email.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+The user interface (UI) is built with **Next.js**, **TypeScript**, **TailwindCSS**, **ShadCN**, and **Lucide React** icons. The application makes use of **TanStack Query** for data fetching and **OpenAI's Chat Completion API** for AI interaction.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Chat Creation**: Users can create new chats with the AI assistant.
+- **Chat History**: Each conversation is saved in the database and can be accessed at any time.
+- **Delete Chats**: Users have the ability to delete chats.
+- **Authentication**: Supports Google, GitHub, and email-based login using ClerkJS.
+- **Responsive Design**: The UI adapts to different screen sizes using TailwindCSS for styling.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Tech Stack
 
-## Learn More
+- **Frontend**:
 
-To learn more about Next.js, take a look at the following resources:
+  - **Next.js** (App Router, API routes)
+  - **TypeScript**
+  - **TailwindCSS** (styling)
+  - **ShadCN** (UI components)
+  - **Lucide React** (Icons)
+  - **TanStack Query** (data fetching)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Backend**:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+  - **NeonDB** (PostgreSQL Database)
+  - **Drizzle ORM** (Database ORM)
+  - **ClerkJS** (Authentication)
 
-## Deploy on Vercel
+- **APIs**:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+  - **OpenAI** (Chat Completion API for AI responses)
+  - **Next.js API Routes** (to handle database operations)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- **Deployment**:
+  - **Vercel** (Deployment with automatic CI/CD pipeline)
+  - **GitHub** (Version control and deployment triggers)
 
-1. nextjs
-2. shadcn -> It's a collection of beautifully designed, accessible, and customizable components that you can simply copy and paste into your apps.
-3. clerkauth -> handle authentication. Protects route with provider. add env file.
-4. lucide-react -> lots of icons to use
-5. NeonDB
-6. drizzleORM and drizzle-kit -> sync schema to neondb
-7. 'use client'
-8. react-dropzone
-9. vectors and embeddings. cosine similarities to find the most similar vector to what's asked. embedding is the vector.
-10. tanstack/react-query to handle data querying from local to server endpoints. React query can cache data and return. Create a provider and wrap app with it.
-11. react-hot-toast
-12. pinecone db
-13. langchain
-14. vercel ai sdk
+## Architecture Overview
 
-pinecone terms
+1. **Frontend**:
 
-- index -> database to store vectors
-- namespace -> table. segment pdf vector spaces
+   - The **Next.js** application serves both static pages and dynamic routes. It uses the **App Router** to organize the structure.
+   - For user interface, **TailwindCSS** is used for responsive and modern UI designs, while **ShadCN** provides pre-built, customizable UI components. **Lucide React** is used to integrate icons into the application.
+   - **TanStack Query** is used for handling data fetching (including chat history retrieval and chat creation).
 
-- obtain pdf
-- split and segment pdf
-- vectorise and embed individual documents
-- store vectors into pineconedb
+2. **Backend**:
 
-search
+   - The backend API routes in **Next.js** handle database operations such as fetching and deleting chat data. These routes communicate with the **NeonDB** PostgreSQL database.
+   - **Drizzle ORM** is used to interact with the database, ensuring smooth and efficient querying.
+   - The **OpenAI API** is used to generate AI responses for the chatbot, which are then displayed in the chat interface.
 
-- embed query
-- query pineconedb for similar vectors
-- extract out the metadata of similar vectors
-- feed metadata into openai prompt
--
+3. **Authentication**:
+
+   - **ClerkJS** handles user authentication, supporting various methods including **Google**, **GitHub**, and **email** login.
+   - After successful authentication, users can create and view their chats. All chats are associated with the authenticated user.
+
+4. **Database**:
+   - **NeonDB** is a PostgreSQL database used to persist user data, chat histories, and chat metadata (such as user ID, creation time, and content).
+   - **Drizzle ORM** is used as the object-relational mapper (ORM) to interact with the PostgreSQL database in a type-safe manner, ensuring smooth operations for creating, retrieving, and deleting chats.
+
+## API Routes
+
+- **/api/chat/create**: POST request to create a new chat. Accepts input from the user and sends the message to the OpenAI API, storing both the user’s prompt and the AI response in the database.
+- **/api/chat/delete**: DELETE request to delete a chat. It removes the selected chat from the database and all associated history.
+- **/api/chat/history**: GET request to retrieve the chat history for the logged-in user.
+
+## Database Schema
+
+- **Chats**:
+  - `id` (Primary Key, Auto-increment)
+  - `userId` (Foreign Key: links to Clerk user)
+  - `createdAt` (Timestamp)
+  - `pdfName` (Chat name, optional)
+- **Messages**:
+  - `id` (Primary Key, Auto-increment)
+  - `chatId` (Foreign Key: links to chat)
+  - `sender` (AI or User)
+  - `message` (Text content of the message)
+  - `timestamp` (Timestamp)
+
+## Authentication Flow
+
+1. The user logs in using one of the supported methods: **Google**, **GitHub**, or **email**.
+2. Upon successful authentication, the user is redirected to the homepage or the chat page.
+3. All chats created by the user are associated with their **userId** in the database, ensuring data isolation between users.
+
+## Deployment and CI/CD
+
+- **Vercel** handles deployment, with automatic CI/CD setup whenever changes are pushed to the GitHub repository. The build process automatically detects changes and deploys the latest version.
+- The database is hosted on **NeonDB**, which integrates seamlessly with PostgreSQL.
+
+## Conclusion
+
+This project provides a simple but powerful AI-powered chatbot with full user authentication, chat history persistence, and a clean, modern UI. By using **Next.js**, **ClerkJS**, **Drizzle ORM**, and **NeonDB**, the architecture ensures scalability and maintainability for future enhancements.

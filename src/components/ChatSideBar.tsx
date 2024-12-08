@@ -15,6 +15,7 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
+import { UserButton } from "@clerk/nextjs";
 
 type Props = {
   chats: DrizzleChat[];
@@ -74,16 +75,15 @@ const ChatSideBar = ({ chats, chatId }: Props) => {
 
   return (
     <>
-      <div className="w-full h-screen p-4 text-gray-200 bg-gray-900">
+      <div className="w-full min-w-[100px] h-screen p-4 text-gray-200 bg-gray-900 flex flex-col">
         <Button
           onClick={handleClick}
-          className="w-full border-dashed border-white border"
+          className="w-full border-dashed border-white border flex justify-center items-center sm:justify-start"
         >
-          <PlusCircle className="mr-2 w-4 h-4" />
-          New Chat
+          <PlusCircle className="mr-0 sm:mr-2 w-6 h-6" />
+          <span className="hidden sm:inline">New Chat</span>
         </Button>
-        {/* Hidden file input */}
-        <div className="flex flex-col gap-2 mt-4">
+        <div className="flex flex-col gap-2 mt-4 flex-grow overflow-y-auto">
           {chatList.map((chat, index) => (
             <div key={chat.id}>
               <Link key={chat.id} href={`/chat/${chat.id}`}>
@@ -96,26 +96,29 @@ const ChatSideBar = ({ chats, chatId }: Props) => {
                     }
                   )}
                 >
-                  <MessageCircle className="mr-2" />
-                  <p className="text-xs w-full overflow-hidden text-sm truncate whitespace-nowrap text-ellipsis">
+                  <MessageCircle className="mr-0 sm:mr-2 w-6 h-6" />
+                  <p className="hidden sm:inline text-xs w-full overflow-hidden text-sm truncate whitespace-nowrap text-ellipsis">
                     Chat {index + 1}
                   </p>
                   <button
                     onClick={() => deleteChat(chat.id)}
                     className="ml-2 text-red-500 hover:text-red-700"
                   >
-                    <Trash2 />
+                    <Trash2 className="h-4 w-4 sm:h-5 sm:w-5" />
                   </button>
                 </div>
               </Link>
             </div>
           ))}
-          <Link href="/" className="absolute bottom-4 left-4">
-            <Button className="w-full border-solid border-white border">
-              <ArrowLeft className="" />
-              Back
-            </Button>
-          </Link>
+          <div className="mt-auto flex flex-row gap-4">
+            <Link href="/" className="w-full">
+              <Button className="w-full border-solid border-white border ">
+                <ArrowLeft className="" />
+                <span className="hidden sm:inline">Back</span>
+              </Button>
+            </Link>
+            <UserButton />
+          </div>
         </div>
       </div>
     </>

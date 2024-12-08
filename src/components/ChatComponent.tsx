@@ -48,18 +48,21 @@ const ChatComponent = ({ chatId }: Props) => {
   }, [messages]);
 
   return (
-    <div className="relative h-screen overflow-y-scroll" id="message-container">
-      {/* header */}
-      <div className="sticky top-0 inset-x-0 p-2 bg-white h-fit">
+    <div className="flex flex-col h-screen">
+      {/* Header */}
+      <div className="sticky top-0 inset-x-0 p-2 bg-white h-fit z-10">
         <h3 className="text-xl font-bold">Chat</h3>
       </div>
 
-      {/* message list */}
-      <MessageList messages={messages} isLoading={isLoading} />
+      {/* Message List */}
+      <div className="flex-grow overflow-y-auto px-2" id="message-container">
+        <MessageList messages={messages} isLoading={isLoading} />
+      </div>
 
+      {/* Input Box */}
       <form
         onSubmit={handleSubmit}
-        className="sticky bottom-0 inset-x-0 px-2 py-4 bg-white"
+        className="p-4 bg-white border-t border-gray-200"
       >
         <div className="flex">
           <Input
