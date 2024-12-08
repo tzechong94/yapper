@@ -65,9 +65,10 @@ The user interface (UI) is built with **Next.js**, **TypeScript**, **TailwindCSS
 
 ## API Routes
 
-- **/api/chat/create**: POST request to create a new chat. Accepts input from the user and sends the message to the OpenAI API, storing both the user’s prompt and the AI response in the database.
-- **/api/chat/delete**: DELETE request to delete a chat. It removes the selected chat from the database and all associated history.
-- **/api/chat/history**: GET request to retrieve the chat history for the logged-in user.
+- **/api/chat**: POST request to chat with AI. Accepts input from the user and sends the message to the OpenAI API, storing both the user’s prompt and the AI response in the database.
+- **/api/delete-chat/{id}**: DELETE request to delete a chat. It removes the selected chat from the database and all associated messages.
+- **/api/get-messages**: GET request to retrieve the chat messages for the associated chat ID.
+- **/api/create-chat**: POST request to create a new chat. It creates a new chat in the database and returns the chat ID.
 
 ## Database Schema
 
@@ -79,9 +80,9 @@ The user interface (UI) is built with **Next.js**, **TypeScript**, **TailwindCSS
 - **Messages**:
   - `id` (Primary Key, Auto-increment)
   - `chatId` (Foreign Key: links to chat)
-  - `sender` (AI or User)
-  - `message` (Text content of the message)
-  - `timestamp` (Timestamp)
+  - `role` (AI or User)
+  - `content` (Text content of the message)
+  - `createdAt` (Timestamp)
 
 ## Authentication Flow
 
