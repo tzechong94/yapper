@@ -95,6 +95,10 @@ The user interface (UI) is built with **Next.js**, **TypeScript**, **TailwindCSS
 - **Vercel** handles deployment, with automatic CI/CD setup whenever changes are pushed to the GitHub repository. The build process automatically detects changes and deploys the latest version.
 - The database is hosted on **NeonDB**, which integrates seamlessly with PostgreSQL.
 
+## To run locally
+- Git clone this repo and run npm i.
+- Use your own secret keys for the environment variables. (openai, clerkjs, db url)
+
 ## Conclusion
 
 This project provides a simple but powerful AI-powered chatbot with full user authentication, chat history persistence, and a clean, modern UI. By using **Next.js**, **ClerkJS**, **Drizzle ORM**, and **NeonDB**, the architecture ensures scalability and maintainability for future enhancements.
